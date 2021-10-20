@@ -1,0 +1,119 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+  <div style="width: 1000px; height: 800px;">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js"></script>
+    <script>
+  window.onload = function() {
+    var dataset= JSON.parse("{{data|escapejs}}"); 
+    var labelsArr = dataset.labels;
+  
+    const data = {
+
+        labels: labelsArr,
+        datasets: [{
+            label: '18-20',
+            backgroundColor: 'green',
+            borderColor: 'green',
+            pointRadius: 0,
+            borderWidth: 1,
+            data: dataset.data1,
+        },
+        {
+            label: '20-30',
+            backgroundColor: 'orange',
+            borderColor: 'orange',
+            pointRadius: 0,
+            borderWidth: 1,
+            data: dataset.data2,
+        },
+        {
+            label: '30-40',
+            backgroundColor: 'purple',
+            borderColor: 'purple',
+            pointRadius: 0,
+            borderWidth: 1,
+            data: dataset.data3,
+        },
+        {
+            label: '40-50',
+            backgroundColor: 'cyan',
+            borderColor: 'cyan',
+            pointRadius: 0,
+            borderWidth: 1,
+            data: dataset.data4,
+        },
+        {
+            label: '50-60',
+            backgroundColor: 'yellow',
+            borderColor: 'yellow',
+            pointRadius: 0,
+            borderWidth: 1,
+            data: dataset.data5,
+        },
+        {
+            label: '60-70',
+            backgroundColor: 'brown',
+            borderColor: 'brown',
+            pointRadius: 0,
+            borderWidth: 1,
+            data: dataset.data6,
+        },
+        {
+            label: '70+',
+            backgroundColor: 'gray',
+            borderColor: 'gray',
+            pointRadius: 0,
+            borderWidth: 1,
+            data: dataset.data7,
+        }]
+    };
+    const config = {
+        type: 'line',
+        data: data,
+        options: {
+            interaction: {
+                intersect: false,
+                
+            },
+            scales: {
+                x: {
+                    title:{
+                    text:'Date account created ',
+                    display:true,
+                    color:'black'}
+                    ,
+                    ticks: {
+                        callback: function(val, index) {
+                            const date_as_string = labelsArr[index];
+                            const split_date = date_as_string.split('-');
+                            const date =new Date(split_date[0],split_date[1],split_date[2])
+
+                            if(date.getDate() == 1 && (date.getMonth() == 1 || date.getMonth() == 7)){
+                                return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
+                            }
+                            else
+                                return null;
+                        },
+                    }
+                },
+                y:{title:{
+                    text:'No of users ',
+                    display:true,
+                    color:'black'}
+                    ,}
+            }
+        }
+    };
+    var ctx = document.getElementById('population-chart').getContext('2d');
+    var chart = new Chart(ctx, config);
+  }
+  </script>
+        <div>
+            <canvas id="population-chart"></canvas>
+            <button type="button" class="btn btn-secondary btn-lg"
+     style="background-color: cadetblue;margin-top: 100px;margin-left: 50px;"onclick="location.href = '/thirddategraph/'">Next Graph</button>
+        </div>
+      
+{% endblock %}

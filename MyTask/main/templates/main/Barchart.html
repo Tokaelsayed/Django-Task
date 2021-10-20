@@ -1,0 +1,58 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+
+<div style="width: 1000px; height: 800px;">
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js"></script>
+  <script>
+window.onload = function() {
+        var data = JSON.parse("{{data|escapejs}}");
+        var config = {
+            type: 'bar',
+            data: {
+                datasets: [{
+                data: data.data,
+                backgroundColor: 'purple',
+                hoverBackgroundColor: 'yellow',
+                label: 'affiliate_channel'
+                }],
+                labels: data.labels
+            },
+            options: {
+                responsive: true,
+                legend: {
+                position: 'top',
+ 
+              },
+              scales: {
+              xAxes: [{
+              barPercentage: 0.5
+                  }]
+               },
+              
+              title: {
+                display: true,
+                text: 'affiliate channel precentage'
+              }
+            },
+          
+            
+        };
+        console.log(data.data)
+        console.log(data.labels)
+        var ctx = document.getElementById('population-chart').getContext('2d');
+        window.mybar = new Chart(ctx, config);
+        window.resizeTo(200, 200);
+    };
+</script>
+<div >
+    <canvas id="population-chart"></canvas>
+    <button type="button" class="btn btn-secondary btn-lg"
+     style="background-color: cadetblue;margin-top: 100px;margin-left: 50px;"onclick="location.href = '/secondbarchart/'">Next Graph</button>
+</div>
+</div>
+
+
+{% endblock %}
